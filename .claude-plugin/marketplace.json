@@ -1,0 +1,25 @@
+{
+  "name": "stage0",
+  "metadata": {
+    "description": "Stage0 plugin for AI coding agents: publish and manage your projects from your agent."
+  },
+  "owner": {
+    "name": "Stage0",
+    "url": "https://www.stage0.dev"
+  },
+  "plugins": [
+    {
+      "name": "stage0",
+      "source": "./",
+      "description": "Publish and manage your projects on Stage0 from your AI agent: a skill that teaches the workflow plus the Stage0 MCP server.",
+      "author": {
+        "name": "Stage0",
+        "url": "https://www.stage0.dev"
+      },
+      "homepage": "https://www.stage0.dev",
+      "repository": "https://github.com/abdella2066/stage0-agent-plugin",
+      "license": "MIT",
+      "keywords": ["stage0", "mcp", "agent-skill", "projects", "hackathon", "publishing"]
+    }
+  ]
+}

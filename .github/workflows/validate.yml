@@ -1,0 +1,48 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Manifests agree across clients
+        run: |
+          eq() { [ "$1" = "$2" ] || { echo "Mismatch: '$1' != '$2'"; exit 1; }; }
+          eq "$(jq -r .name plugin.json)" "$(jq -r .name .claude-plugin/plugin.json)"
+          eq "$(jq -r .version plugin.json)" "$(jq -r .version .claude-plugin/plugin.json)"
+          eq "$(jq -r .description plugin.json)" "$(jq -r .description .claude-plugin/plugin.json)"
+          eq "$(jq -r .name plugin.json)" "$(jq -r '.plugins[0].name' .claude-plugin/marketplace.json)"
+          eq "$(jq -r '.mcpServers["stage-zero"].url' mcp.json)" "$(jq -r '.mcpServers["stage-zero"].url' .mcp.json)"
+          eq "$(sed -n 's/^name: //p' skills/stage0-publish/SKILL.md)" "stage0-publish"
+
+      - name: Agent Plugins manifests match the official schemas
+        run: |
+          base=https://agent-plugins.org/schemas/1.0.0
+          curl -fsSL "$base/plugin.schema.json" -o "$RUNNER_TEMP/plugin.schema.json"
+          curl -fsSL "$base/mcp.schema.json" -o "$RUNNER_TEMP/mcp.schema.json"
+          validate() { npx --yes -p ajv-cli@5 -p ajv-formats ajv validate --spec=draft2020 --strict=false -c ajv-formats -s "$1" -d "$2"; }
+          validate "$RUNNER_TEMP/plugin.schema.json" plugin.json
+          validate "$RUNNER_TEMP/mcp.schema.json" mcp.json
+
+      - name: Claude Code accepts the plugin and marketplace
+        run: |
+          npx --yes @anthropic-ai/claude-code plugin validate .
+          npx --yes @anthropic-ai/claude-code plugin validate ./.claude-plugin/plugin.json
+
+      - name: The skills CLI discovers the skill
+        run: npx --yes skills@latest add . --list | grep -q stage0-publish

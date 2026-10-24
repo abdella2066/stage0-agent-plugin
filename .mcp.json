@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "stage-zero": {
+      "type": "http",
+      "url": "https://www.stage0.dev/mcp"
+    }
+  }
+}
