@@ -27,7 +27,11 @@ jobs:
           eq "$(jq -r .version plugin.json)" "$(jq -r .version .claude-plugin/plugin.json)"
           eq "$(jq -r .description plugin.json)" "$(jq -r .description .claude-plugin/plugin.json)"
           eq "$(jq -r .name plugin.json)" "$(jq -r '.plugins[0].name' .claude-plugin/marketplace.json)"
-          eq "$(jq -r '.mcpServers["stage-zero"].url' mcp.json)" "$(jq -r '.mcpServers["stage-zero"].url' .mcp.json)"
+          server="$(jq -r '.mcpServers | keys[0]' mcp.json)"
+          url="$(jq -r '.mcpServers | to_entries[0].value.url' mcp.json)"
+          eq "$server" "$(jq -r '.mcpServers | keys[0]' .mcp.json)"
+          eq "$url" "$(jq -r '.mcpServers | to_entries[0].value.url' .mcp.json)"
+          grep -qF "claude mcp add --transport http $server $url" skills/stage0-publish/SKILL.md || { echo "SKILL.md must document: claude mcp add --transport http $server $url"; exit 1; }
           eq "$(sed -n 's/^name: //p' skills/stage0-publish/SKILL.md)" "stage0-publish"
 
       - name: Agent Plugins manifests match the official schemas

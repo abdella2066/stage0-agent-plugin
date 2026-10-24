@@ -5,7 +5,7 @@ Publish and manage your [Stage0](https://www.stage0.dev) projects from your AI a
 This plugin gives an agent two things:
 
 - **The `stage0-publish` skill** teaches it the draft-to-publish workflow, Stage0's publishing checklist, hackathon tagging, and when to check with you first.
-- **The Stage0 MCP server** (`stage-zero`, `https://www.stage0.dev/mcp`) gives it the tools to list, create, update, publish, unpublish, archive, and delete your projects.
+- **The Stage0 MCP server** (`stage0`, `https://www.stage0.dev/mcp`) gives it the tools to list, create, update, publish, unpublish, archive, and delete your projects.
 
 You sign in with LinkedIn when your client asks. The agent can only work with your own projects.
 
@@ -15,10 +15,12 @@ You sign in with LinkedIn when your client asks. The agent can only work with yo
 
 ```bash
 claude plugin marketplace add abdella2066/stage0-agent-plugin
-claude plugin install stage0@stage0
+claude plugin install stage0@stage0-plugins
 ```
 
-Or inside a session: `/plugin marketplace add abdella2066/stage0-agent-plugin`, then `/plugin install stage0@stage0`. This installs the skill and the MCP server together.
+Or inside a session: `/plugin marketplace add abdella2066/stage0-agent-plugin`, then `/plugin install stage0@stage0-plugins`. This installs the skill and the MCP server together.
+
+Claude Code names a plugin as `plugin@marketplace`: here `stage0` is the plugin and `stage0-plugins` is the marketplace this repo provides.
 
 ### VS Code with GitHub Copilot
 
@@ -34,12 +36,12 @@ The [skills CLI](https://github.com/vercel-labs/skills) needs Node.js 22.20 or l
 
 ### Add only the MCP server
 
-| Client        | Command or config                                                                              |
-| ------------- | ---------------------------------------------------------------------------------------------- |
-| Claude Code   | `claude mcp add --transport http stage-zero https://www.stage0.dev/mcp`                        |
-| VS Code       | `code --add-mcp '{"name":"stage-zero","type":"http","url":"https://www.stage0.dev/mcp"}'`     |
-| Cursor        | In `~/.cursor/mcp.json`: `{"mcpServers":{"stage-zero":{"url":"https://www.stage0.dev/mcp"}}}` |
-| Anything else | Add an HTTP (Streamable HTTP) MCP server with that URL                                         |
+| Client        | Command or config                                                                         |
+| ------------- | ----------------------------------------------------------------------------------------- |
+| Claude Code   | `claude mcp add --transport http stage0 https://www.stage0.dev/mcp`                       |
+| VS Code       | `code --add-mcp '{"name":"stage0","type":"http","url":"https://www.stage0.dev/mcp"}'`     |
+| Cursor        | In `~/.cursor/mcp.json`: `{"mcpServers":{"stage0":{"url":"https://www.stage0.dev/mcp"}}}` |
+| Anything else | Add an HTTP (Streamable HTTP) MCP server with that URL                                    |
 
 If you installed the plugin, you don't need this.
 
@@ -49,11 +51,11 @@ Ask your agent something like "Add my project to Stage0" or "Publish my Stage0 p
 
 ## What's in this repo
 
-| Path                             | Purpose                                                                                                                       |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `skills/stage0-publish/SKILL.md` | The skill                                                                                                                     |
+| Path                             | Purpose                                                                                                                         |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `skills/stage0-publish/SKILL.md` | The skill                                                                                                                       |
 | `plugin.json`, `mcp.json`        | [Agent Plugins](https://agent-plugins.org) manifest and MCP config, read by VS Code and other compatible clients such as Cursor |
-| `.claude-plugin/`, `.mcp.json`   | Claude Code plugin manifest, marketplace listing, and MCP config                                                              |
+| `.claude-plugin/`, `.mcp.json`   | Claude Code plugin manifest, marketplace listing, and MCP config                                                                |
 
 There are no hooks, scripts, or local executables. The MCP server is remote and uses OAuth, and nothing here stores credentials.
 

@@ -15,12 +15,14 @@ Stage0 is where builders publish projects, from early ideas to live products, an
 
 The Stage0 tools are `list_projects`, `get_project`, `create_project`, `update_project`, `publish_project`, `unpublish_project`, `archive_project`, and `delete_project`. If you can't see them, ask the user before changing their MCP configuration, then add the server (Streamable HTTP, `https://www.stage0.dev/mcp`):
 
-| Client           | Add the server with                                                                           |
-| ---------------- | --------------------------------------------------------------------------------------------- |
-| Claude Code      | `claude mcp add --transport http stage-zero https://www.stage0.dev/mcp`                       |
-| VS Code          | `code --add-mcp '{"name":"stage-zero","type":"http","url":"https://www.stage0.dev/mcp"}'`     |
-| Cursor           | In `~/.cursor/mcp.json`: `{"mcpServers":{"stage-zero":{"url":"https://www.stage0.dev/mcp"}}}` |
-| Any other client | Add an HTTP MCP server named `stage-zero` with that URL                                       |
+| Client           | Add the server with                                                                       |
+| ---------------- | ----------------------------------------------------------------------------------------- |
+| Claude Code      | `claude mcp add --transport http stage0 https://www.stage0.dev/mcp`                       |
+| VS Code          | `code --add-mcp '{"name":"stage0","type":"http","url":"https://www.stage0.dev/mcp"}'`     |
+| Cursor           | In `~/.cursor/mcp.json`: `{"mcpServers":{"stage0":{"url":"https://www.stage0.dev/mcp"}}}` |
+| Any other client | Add an HTTP MCP server named `stage0` with that URL                                       |
+
+If Stage0 is already connected under another name, keep using that entry instead of adding a second one.
 
 The client then asks the user to sign in with LinkedIn and approve access, usually in the browser. Some clients need a reload before the tools appear. Never ask for passwords, tokens, or API keys, and never write credentials into config files or chat.
 

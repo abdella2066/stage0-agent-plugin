@@ -1,6 +1,6 @@
 {
   "name": "stage0",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Publish and manage your projects on Stage0 from your AI agent: a skill that teaches the workflow plus the Stage0 MCP server.",
   "author": {
     "name": "Stage0",
